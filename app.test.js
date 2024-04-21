@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("./app");
+let testProductId;
 
 describe("POST /products", () => {
   it("should create a new product", async () => {
@@ -48,7 +49,23 @@ describe("GET /products", () => {
       expect(product).toHaveProperty("category");
       expect(product).toHaveProperty("price");
       expect(product).toHaveProperty("stock");
+      testProductId = product._id;
     });
   });
-  // Add more test cases for GET, PUT, DELETE as needed
+});
+
+describe("PUT /products/:id", () => {
+  it("should updated product", async () => {
+    const updateProduct = {
+      name: "Test Product",
+      category: "Test Category",
+      price: 20.99,
+      stock: 200,
+    };
+    const response = await request(app)
+      .put(`/products/${testProductId}`)
+      .send(updateProduct);
+    expect(response.status).toBe(200);
+    expect(response.text).toEqual("Updated successfully");
+  });
 });
