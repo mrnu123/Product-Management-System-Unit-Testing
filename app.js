@@ -3,6 +3,7 @@ require("dotenv").config();
 const validator = require("validator");
 const mongoose = require("mongoose");
 const express = require("express");
+
 const app = express();
 const port = 30000;
 const mongoUser = encodeURIComponent(process.env.MONGO_DB_USER);
@@ -101,3 +102,5 @@ app.delete("/products/:id", (req, res, next) => {
 app.listen(port, () => {
   console.log(`Server runing at <http://localhost>:${port}/`);
 });
+
+module.exports = app;
