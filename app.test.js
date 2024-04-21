@@ -55,17 +55,32 @@ describe("GET /products", () => {
 });
 
 describe("PUT /products/:id", () => {
+  const updateProduct = {
+    name: "Test Product",
+    category: "Test Category",
+    price: 20.99,
+    stock: 200,
+  };
   it("should updated product", async () => {
-    const updateProduct = {
-      name: "Test Product",
-      category: "Test Category",
-      price: 20.99,
-      stock: 200,
-    };
     const response = await request(app)
       .put(`/products/${testProductId}`)
       .send(updateProduct);
     expect(response.status).toBe(200);
     expect(response.text).toEqual("Updated successfully");
+  });
+
+  it("should return internal error", async () => {
+    const response = await request(app)
+      .put("/products/123")
+      .send(updateProduct);
+    expect(response.status).toBe(500);
+  });
+});
+
+describe("DELETE /products/:id", () => {
+  it("should deleted a product", async () => {
+    const response = await request(app).delete(`/products/${testProductId}`);
+    expect(response.status).toBe(200);
+    expect(response.text).toEqual("Deleted successfully");
   });
 });
