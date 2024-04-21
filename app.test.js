@@ -35,8 +35,20 @@ describe("GET /products", () => {
     const response = await request(app).get("/products");
 
     expect(response.status).toBe(200);
-    // Assert response body or length of products array
   });
+  it("should get product by query params", async () => {
+    const product = { name: "Test Product" };
+    const response = await request(app).get("/products").query(product);
 
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBeGreaterThan(0);
+    response.body.forEach((product) => {
+      expect(product).toHaveProperty("name");
+      expect(product).toHaveProperty("category");
+      expect(product).toHaveProperty("price");
+      expect(product).toHaveProperty("stock");
+    });
+  });
   // Add more test cases for GET, PUT, DELETE as needed
 });
